@@ -1,7 +1,7 @@
 package basics.part1basics
 
 /**
-  * Created by Danveer on 07-May-18.
+  * Created by Danveer.
   */
 object Expressions extends App {
 
@@ -9,7 +9,7 @@ object Expressions extends App {
   println(x)
 
   println(2 + 3 * 4)
-  // + - * / & | ^ << >> >>> (right shift with zero extension)
+  // + - * / & | ^
 
   println(1 == x)
   // == != > >= < <=
