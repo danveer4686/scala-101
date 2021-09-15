@@ -36,8 +36,6 @@ object Expressions extends App {
     i += 1
   }
 
-  // NEVER WRITE THIS AGAIN.
-
   // EVERYTHING in Scala is an Expression!
 
   val aWeirdValue = (aVariable = 3) // Unit === void
