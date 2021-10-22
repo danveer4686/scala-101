@@ -1,0 +1,127 @@
+############### Call by name Call by value ###############
+
+def getStatus (i:Long) = {
+println(s"It is $i")
+println(s"It is $i")
+println(s"It is $i")
+}
+def getStatusLazy (i: => Long) = {
+println(s"It is $i")
+println(s"It is $i")
+println(s"It is $i")
+}
+
+getStatus(System.nanoTime)
+getStatusLazy(System.nanoTime)
+
+############### Oop in scala ###############
+
+Access modifiers: private, protected, default public
+
+Object: Singleton (no static keyword in scala)
+override
+overload
+prevent inheritance using final and sealed
+
+field vs parameter
+case class MyClass1 (name:String, val id: Int)
+here name is parameter but id is field (getter setter method are already created for us)
+
+############### Tarits vs Abstract classes ###############
+
+Similarities:
+both can have implimented/abstract members
+
+Differences:
+1. multiple tarits can be inherited by same class while only one abstract class is allowed
+2. traits can not have parameters while abstract classes can have
+3. Usage/purpose: Abstract class is "type of thing", Trait is "behaviour of thing"
+
+############### scala types ###############
+
+scala.Any  <-  (a,b)
+
+a: scala.AnyRef (java.lang.Object) example: all user defined classes, String, List, Set...	<- scala.Null
+b: scala.AnyVal Int, Unit, Boolean, Float
+
+(a,b) <- scala.Nothing
+
+
+############### Generics ###############
+
+class Animal
+class Dogs extends Animal
+class Cat extends Animal
+
+polymorphism
+val pet: Animal = new Cat
+
+covarient type
+class MyPets[+A]
+val a:MyPets[Animal] = new MyPets[Dog]
+
+without covarient type
+class MyPets[A]
+val a:MyPets[Animal] = new MyPets[Animal]
+
+invarient type
+class MyPets[-A]
+val a:MyPets[Dog] = new MyPets[Animal]
+
+
+############### Functional Programming ###############
+
+############### Pure Function ###############
+
+output solely depends on input
+input will not get changed
+
+############### Referential Transperent ###############
+
+pure function will always give same result for same input.
+
+############### First class function ###############
+
+can be passed as an argument in another function
+can be returned as output from another function
+can be assigned to one variable
+
+############### Higher order function ###############
+
+can take a function as an argument
+can return a function as output
+
+############### Immutability ###############
+
+scala provides var and val
+var are mutable and val are immutable
+
+1. Immutability helps writing pure functions
+2. It is safe for multithreading
+3. Original data loss will not happen
+
+############### Recursion ###############
+
+def fact(n: Long):Long = if (n<=1) 1 else n*fact(n-1)
+
+############### Tail Recursion ###############
+
+def fact(n:BigInt, acc:BigInt):BigInt = if (n<=1) acc else fact(n-1, n*acc)
+
+
+
+############### Sample Programs ###############
+
+1. common element in 2 arrays
+2. pair in array with given sum
+3. reverse each word in one sentence
+4. merge 2 sorted arrays
+5. find max sum of any sub array
+6. find first recurring character
+7.
+
+############# get list of field name from caseclass #################
+import scala.reflect.runtime.universe._
+def getMethods[T: TypeTag] = typeOf[T].members.sorted.collect{case m: MethodSymbol if m.isCaseAccessor => m.name.toString}.toList
+
+
