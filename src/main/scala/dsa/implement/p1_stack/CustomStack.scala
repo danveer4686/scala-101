@@ -23,6 +23,11 @@ class CustomStack(var size:Int) {
     }
     else throw new Exception("Error occurred! Stack is empty")
   }
+
+  def peek():Int = {
+    custom_stack(top_index)
+  }
+
 }
 
 object CreateNewCustomStack extends App {
