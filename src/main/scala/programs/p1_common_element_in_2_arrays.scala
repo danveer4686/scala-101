@@ -34,6 +34,11 @@ object p1_common_element_in_2_arrays extends App {
 
   }
 
+  def hasCommon3(l1:List[Char],l2:List[Char]):Boolean = {
+    val map:HashMap[Char,Boolean] = HashMap(l1.map(i=>i->true):_*)
+    for (char<-l2) if (map.contains(char)) return true
+    false
+  }
   print(hasCommon2(list1,list2))
 
 }

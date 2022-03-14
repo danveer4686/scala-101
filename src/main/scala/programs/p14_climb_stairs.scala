@@ -14,21 +14,20 @@ package programs
     memo(nums.size)
  */
 
-object p9_house_robber extends App {
+object p14_climb_stairs extends App {
 
-  def getMaxSum(nums:Array[Int]):Int = {
+  def climbStairs(n: Int): Int = {
 
-    val memo:Array[Int] = new Array(nums.size+1)
+    val memo:Array[Int] = new Array(n+1)
     memo(0) = 0
-    memo(1) = nums(0)
+    memo(1) = 1
+    memo(2) = 2
 
-    for (i <- 1 to nums.size-1) {
-      memo(i+1) = Math.max(memo(i), memo(i-1)+nums(i))
+    for (n <- 3 to n) {
+      memo(n) = memo(n-2) + memo(n-1)
     }
-
-    memo(nums.size)
+    memo(n)
   }
-
-  println(getMaxSum(Array(1,2,3,1,1,100)))
+  println(climbStairs(4))
 
 }

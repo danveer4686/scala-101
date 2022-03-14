@@ -29,4 +29,14 @@ def getFirstRecurringInt(arr:Array[Int]):Int = {
   }
   res
 }
+
+
+  def getFirstRecurringInt2(arr:Array[Int]):Int = {
+    val map:HashMap[Int,Boolean] = HashMap( )
+    for ( i<-arr ) {
+      if (map.contains(i)) return i
+      else map+=(i->true)
+    }
+    -1
+  }
 }
