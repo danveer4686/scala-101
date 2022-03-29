@@ -18,7 +18,7 @@ object p25_number_of_island extends App {
   }
 
   def callBFS(grid: Array[Array[Int]], i:Int, j:Int): Unit ={
-    if (j<0 || i<0 || j> grid(i).length-1 || i>grid.length-1 || grid(i)(j) == 0) {
+    if (j<0 || i<0 || j>= grid(0).length || i>=grid.length || grid(i)(j) == 0) {
       return
     }
     grid(i)(j)=0
