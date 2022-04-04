@@ -1,7 +1,7 @@
 package programs
 
 /**
- * when input is sorted think about binary tree and two pointers
+ * when input is sorted think about binary search and two pointers
  */
 
 object p2_find_pair_with_given_sum_sorted extends App {
