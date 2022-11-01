@@ -2,11 +2,6 @@ package programs
 
 object p6_palindrome_linked_list extends App {
 
-   class ListNode(_x: Int = 0, _next: ListNode = null) {
-     var next: ListNode = _next
-     var x: Int = _x
-   }
-
   def reverseList(head: ListNode): ListNode = {
     var previous: ListNode = null
     var current: ListNode = head
@@ -20,5 +15,35 @@ object p6_palindrome_linked_list extends App {
     }
     previous
   }
+
+  def middleNode(head: ListNode): ListNode = {
+
+    var slow = head
+    var fast = head
+
+    while (fast!=null && fast.next!=null){
+      slow = slow.next
+      fast = fast.next.next
+    }
+    slow
+  }
+
+  class ListNode(var x:Int = 0, var next:ListNode=null)
+
+  def isPalindrome(head: ListNode): Boolean = {
+
+    var fh = head
+    val middle = middleNode(head)
+    val reversed = reverseList(middle)
+    var sh = reversed
+
+    while(fh!=null && sh!=null ){
+      if(fh.x!=sh.x) return false
+      fh= fh.next
+      sh= sh.next
+    }
+    true
+  }
+
 
 }
