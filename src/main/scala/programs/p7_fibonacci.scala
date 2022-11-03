@@ -56,11 +56,11 @@ object p7_fibonacci extends App {
 //    println(revNum(0,1792787))
 
 
-  def twoSum(nums: Array[Int], target: Int): Array[Int] = {
-
-    import scala.collection.immutable.HashMap
-    val hm = HashMap(nums.zipWithIndex.map( x => x._1 -> x._2):_*)
-    for (i <- 0 to nums.length-1 ) if (hm.contains(target-nums(i)) && hm(nums(i)) != i) return Array(hm(num),hm(target-num))
-    Array(-1,-1)
-  }
+//  def twoSum(nums: Array[Int], target: Int): Array[Int] = {
+//
+//    import scala.collection.immutable.HashMap
+//    val hm = HashMap(nums.zipWithIndex.map( x => x._1 -> x._2):_*)
+//    for (i <- 0 to nums.length-1 ) if (hm.contains(target-nums(i)) && hm(nums(i)) != i) return Array(hm(num),hm(target-num))
+//    Array(-1,-1)
+//  }
 }

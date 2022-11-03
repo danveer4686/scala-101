@@ -14,5 +14,13 @@ object p2_find_pair_with_given_sum extends App {
     val res = desired_vals.flatMap{x => if (map.contains(x)) Map((sum-x) -> x ) else None }
     print(res)
   }
-  getPairWithSum(6,List(1,2,3,4,5,6,7))
+
+  def getPair(sum:Int, l:List[Int])={
+    val given = HashMap(l.map(_->true):_* )
+    val pair :scala.collection.mutable.Map[Int,Boolean] = scala.collection.mutable.Map()
+    val res :scala.collection.mutable.Map[Int,Int] = scala.collection.mutable.Map()
+    l.map{ x => if (given.contains(sum-x) && !pair.contains(sum-x) ) {res+=x->(sum-x); pair+=x->true} }
+    res
+  }
+  println(getPair(6,List(1,2,3,4,5,6,7)))
 }

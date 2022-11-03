@@ -18,7 +18,11 @@ object p1_contains_duplicate extends App {
     false
   }
 
-  println(containsDuplicate(Array(1,2,3,1)))
+  def containsDuplicate2(nums: Array[Int]):Boolean = {
+    HashSet(nums:_*).size!=nums.size
+  }
+
+  println(containsDuplicate2(Array(1,2,3,5)))
 
 
   val arr:Array[Int] = Array('a',2,3)
