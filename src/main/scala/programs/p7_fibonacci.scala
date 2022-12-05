@@ -13,6 +13,17 @@ object p7_fibonacci extends App {
     else normalFib(n-2)+normalFib(n-1)
   }
 
+  val hm :HashMap[Int,Int] = new HashMap()
+  def fib(n:Int):Int = {
+    if (n<=2) n
+    else if (hm.contains(n)) hm(n) else {
+      hm(n) = fib(n - 1) + fib(n - 2)
+      hm(n)
+    }
+  }
+
+  println(fib(4))
+
   def memoizedFibonacci : Int=>Int = {
 
     def fib(n:Int):Int = if (n<=2) n else fib(n-2)+fib(n-1)
