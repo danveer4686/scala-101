@@ -1,6 +1,6 @@
 package programs.part3_linked_list
 
-object p3_palindrome_linked_list extends App {
+object p5_palindrome_linked_list extends App {
 
   def reverseList(head: ListNode): ListNode = {
     var previous: ListNode = null

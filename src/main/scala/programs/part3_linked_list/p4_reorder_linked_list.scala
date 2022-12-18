@@ -2,10 +2,7 @@ package programs.part3_linked_list
 
 object p4_reorder_linked_list extends App {
 
-  class ListNode(_x: Int = 0, _next: ListNode = null) {
-    var next: ListNode = _next
-    var x: Int = _x
-  }
+  class ListNode(var x: Int = 0, var next: ListNode = null)
 
   def reverseList(head: ListNode): ListNode = {
     var prev: ListNode = null
