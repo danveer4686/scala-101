@@ -29,17 +29,4 @@ object p30_find_happy_number extends App {
     res
   }
 
-
-  class ListNode(_x: Int = 0, _next: ListNode = null) {
-    var next: ListNode = _next
-    var x: Int = _x
-  }
-  def reverseList(head: ListNode): ListNode = {
-//    var (prev, curr, next) = (null, head, null)
-//    while(curr!=null){
-//      next = curr.next
-???
-    }
-
-
 }
