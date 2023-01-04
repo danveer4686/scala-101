@@ -19,12 +19,9 @@ object p14_climb_stairs extends App {
   def climbStairs(n: Int): Int = {
 
     val memo:Array[Int] = new Array(n+1)
-    memo(0) = 0
-    memo(1) = 1
-    memo(2) = 2
-
-    for (n <- 3 to n) {
-      memo(n) = memo(n-2) + memo(n-1)
+    for (i <- 0 to n) {
+      if (i<=2) memo(i) = i
+      else memo(i) = memo(i-2)+memo(i-1)
     }
     memo(n)
   }
