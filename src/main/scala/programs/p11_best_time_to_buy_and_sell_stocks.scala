@@ -18,6 +18,15 @@ import Math.{max,min}
 
 object p11_best_time_to_buy_and_sell_stocks extends App {
 
+  def maxProfit(prices: Array[Int]): Int = {
+    var ( min_value , max_prof ) = (10000, 0)
+    for (p <- prices) {
+      min_value = Math.min(min_value, p)
+      max_prof = Math.max(max_prof, p-min_value)
+    }
+    max_prof
+  }
+
   def getMaxProfit(nums:Array[Int]):Int={
 
     var min_value = Integer.MAX_VALUE
@@ -29,5 +38,5 @@ object p11_best_time_to_buy_and_sell_stocks extends App {
     }
     max_profit
   }
-  println( getMaxProfit(Array(7,1,5,3,6,4,11)) )
+  println( maxProfit(Array(7,1,5,3,6,4,11)) )
 }
