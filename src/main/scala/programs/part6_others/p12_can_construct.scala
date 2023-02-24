@@ -1,8 +1,8 @@
-package programs
+package programs.part6_others
 
 /**
  * rob non-adjacent houses to get max amount
- *O(n) using below dynamic program format
+ * O(n) using below dynamic program format
  * val memo:Array[Int] = new Array(nums.size+1)
  * memo(0) = 0
  * memo(1) = nums(0)
@@ -16,14 +16,14 @@ package programs
 
 object p12_can_construct extends App {
 
-  def canConstruct(target:String, strs:Array[String]):Boolean={
+  def canConstruct(target: String, strs: Array[String]): Boolean = {
 
-    if (target=="") return true
+    if (target == "") return true
     for (str <- strs) {
-      if (target.indexOf(str)==0) return canConstruct(target.replace(str,""),strs)
+      if (target.indexOf(str) == 0) return canConstruct(target.replace(str, ""), strs)
     }
     false
   }
 
-  println(canConstruct("abcdefg",Array("abc","def","de","ef")))
+  println(canConstruct("abcdefg", Array("abc", "def", "de", "ef")))
 }

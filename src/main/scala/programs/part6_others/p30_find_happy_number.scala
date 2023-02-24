@@ -1,4 +1,4 @@
-package programs
+package programs.part6_others
 
 object p30_find_happy_number extends App {
 
@@ -18,13 +18,13 @@ object p30_find_happy_number extends App {
 
   }
 
-  def getSquare( p_num:Int):Int={
+  def getSquare(p_num: Int): Int = {
     var res = 0
     var num = p_num
-    while(num>0){
-      val rem = num%10
-      res+=rem*rem
-      num=num/10
+    while (num > 0) {
+      val rem = num % 10
+      res += rem * rem
+      num = num / 10
     }
     res
   }
