@@ -1,6 +1,7 @@
 package programs.part1_linear_search
 
 object p5_move_zeros_to_last extends App{
+//https://leetcode.com/problems/move-zeroes/
   def moveZeroes(nums: Array[Int]): Unit = {
     var (i,j) = (0,0)
     while (j<nums.size){

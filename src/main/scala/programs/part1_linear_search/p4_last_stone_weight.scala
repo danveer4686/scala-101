@@ -1,6 +1,7 @@
 package programs.part1_linear_search
 
 object p4_last_stone_weight extends App {
+//https://leetcode.com/problems/last-stone-weight/
 import scala.collection.mutable.PriorityQueue
   def lastStoneWeight(stones: Array[Int]): Int = {
 

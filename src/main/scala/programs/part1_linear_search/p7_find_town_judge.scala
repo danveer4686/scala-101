@@ -1,8 +1,7 @@
 package programs.part1_linear_search
 
 object p7_find_town_judge extends App {
-
-
+//https://leetcode.com/problems/find-the-town-judge/
   def findJudge(n: Int, trust: Array[Array[Int]]): Int = {
     import scala.collection.mutable.HashSet
     val truster:HashSet[Int] = HashSet(trust.map(_(0)):_*)
@@ -14,7 +13,6 @@ object p7_find_town_judge extends App {
   }
 
   def findJudge2(n: Int, trust: Array[Array[Int]]): Int = {
-
     val arr:Array[Int] = Array.fill(n+1)(0)
     var tj:Int = -1
     for (elem<-trust) {
@@ -24,7 +22,5 @@ object p7_find_town_judge extends App {
     for (i <- 1 to n)  if (arr(i)==n-1) tj = i
     tj
   }
-
   println(findJudge2(3,Array(Array(1,3),Array(2,3))))
-
 }

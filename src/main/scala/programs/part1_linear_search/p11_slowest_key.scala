@@ -1,6 +1,7 @@
 package programs.part1_linear_search
 
 object p11_slowest_key extends App{
+//https://leetcode.com/problems/slowest-key/
   def slowestKey(releaseTimes: Array[Int], keysPressed: String): Char = {
     var max_d = releaseTimes(0)
     var temp_d = releaseTimes(0)

@@ -1,7 +1,7 @@
 package programs.part1_linear_search
 
 object p4_max_sub_array extends App {
-
+//https://leetcode.com/problems/maximum-subarray/
   def maxSubArray(nums: Array[Int]): Int = {
     var global_max = Integer.MIN_VALUE
     var temp_sum = 0

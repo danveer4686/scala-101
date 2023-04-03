@@ -9,8 +9,6 @@ object p10_largest_substring extends App {
       if (hm.contains(s(i))) hm(s(i)) = hm(s(i)) ++ Array(i)
       else hm(s(i)) = Array(i)
     }
-
    hm.map(x => x._2.last - x._2(0) ).max-1
   }
-
 }

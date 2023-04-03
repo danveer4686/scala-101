@@ -1,7 +1,7 @@
 package programs.part1_linear_search
 
 object p8_find_majority_element extends App {
-
+//https://leetcode.com/problems/majority-element/
   def majorityElement(nums: Array[Int]): Int = {
     import scala.collection.mutable.HashMap
     var hm:HashMap[Int,Int] = HashMap(nums.map(x=>(x,0)):_*)
