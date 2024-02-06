@@ -4,7 +4,7 @@ import advance.part6zio.MyZIO.{MyConsole, MyZIO, Runtime}
 
 object MyZIOApp extends App {
 
-   val app : MyZIO[Unit] = for {
+   val app : MyZIO[Nothing, Unit] = for {
       _ <- MyConsole.putStrLn("#"*100)
       _ <- MyConsole.putStrLn("Enter you name:")
       name <- MyConsole.getStrLn()

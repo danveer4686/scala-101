@@ -1,35 +1,26 @@
 package basics.part5bestpractices
 
-object AvoidNPE extends App {
+object SealedTraits extends App {
 
-  betterProgram()
-  //program()
+  //function with return type of sealed traits
+  //guides user to consider all the possible outcomes at compile time
+  sealed trait Result
+  case class Success(value: String) extends Result
+  case class InvalidInput(value: String, msg: String) extends Result
+  case class SubprocessFailed(return_code: Int, stderr: String) extends Result
+
+  def getResult(): Result = {
+    InvalidInput("400", "BadInput")
+  }
 
   def program():Unit ={
-    val myPath:String = getDataPath().substring(5,5)
-    println (myPath)
-  }
-
-  def betterProgram():Unit ={
-    val myPathOption:Option[String] = getDataPathSafely()
-    val myPath  = myPathOption match {
-      case Some(x) => x.substring(5,5)
-      case None => "default_value"
+    val myResult:Result = getResult()
+    myResult match {
+      case Success(x) => println(x)
+      //case SubprocessFailed(x,y) => println("SubprocessFailed")
+      case InvalidInput(x,y) => println("InvalidInput")
+      //case _ =>  println("something_else")
     }
-    println (myPath)
   }
-
-  def getDataPath():String = {
-  //read a table from DB and return the path
-  //there is possibility of getting null values
-    null
-  }
-
-  def getDataPathSafely():Option[String] = {
-    //read a table from DB and return the path
-    //there is possibility of getting null values
-    //better return Option of string
-    Option(null)
-  }
-
+  program()
 }

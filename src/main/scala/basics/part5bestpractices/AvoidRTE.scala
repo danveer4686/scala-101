@@ -1,35 +1,21 @@
 package basics.part5bestpractices
 
-object AvoidNPE extends App {
+import scala.util.Try
 
-  betterProgram()
-  //program()
-
+object AvoidRTE extends App {
+  program()
   def program():Unit ={
-    val myPath:String = getDataPath().substring(5,5)
-    println (myPath)
-  }
-
-  def betterProgram():Unit ={
-    val myPathOption:Option[String] = getDataPathSafely()
-    val myPath  = myPathOption match {
-      case Some(x) => x.substring(5,5)
-      case None => "default_value"
+    devide(2,0) match {
+      case Left(x) => println(x)
+      case Right(x) => println(x)
     }
-    println (myPath)
+    println(devide(2,0).getOrElse("inputs are not as expected"))
   }
 
-  def getDataPath():String = {
-  //read a table from DB and return the path
-  //there is possibility of getting null values
-    null
-  }
+  def devide(x:Int,y:Int):Either[String,Int] =
+            if (y==0) Left("Bad value for a divisor")
+            else Right(x/y)
 
-  def getDataPathSafely():Option[String] = {
-    //read a table from DB and return the path
-    //there is possibility of getting null values
-    //better return Option of string
-    Option(null)
-  }
+  def devideNotSafe(x:Int,y:Int):Int = x/y
 
 }

@@ -1,6 +1,6 @@
 package advance.part6zio
 
-object MyZIO {
+object MyZIOPlayGround {
 
   final case class MyZIO[A](func: () => A) {
 
@@ -31,11 +31,11 @@ object MyZIO {
   }
 
   object MyConsole {
-        def putStrLn (line: => String): MyZIO[Unit] =
-          MyZIO.succeed(println(line))
+    def putStrLn (line: => String): MyZIO[Unit] =
+      MyZIO.succeed(println(line))
 
-        def getStrLn (): MyZIO[String] =
-          MyZIO.succeed(scala.io.StdIn.readLine())
+    def getStrLn (): MyZIO[String] =
+      MyZIO.succeed(scala.io.StdIn.readLine())
   }
 
   object Runtime {
