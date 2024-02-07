@@ -12,7 +12,7 @@ object AvoidRTE extends App {
     println(devide(2,0).getOrElse("inputs are not as expected"))
   }
 
-  def devide(x:Int,y:Int):Either[String,Int] =
+  def devide(x:Int,y:Int):Either[String, Int] =
             if (y==0) Left("Bad value for a divisor")
             else Right(x/y)
 
