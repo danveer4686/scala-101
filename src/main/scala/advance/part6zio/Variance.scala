@@ -5,25 +5,37 @@ package advance.part6zio
   */
 object Variance extends App {
 
-  class Animal
+  class Animal extends AnyRef
   class Cat extends Animal
   class Dog extends Animal
+  class Puppy extends Dog
+//  AnyRef
+//  Animal
+//  Dog
+//  Puppy
 
   //INVARIANCE
   class InvariantList[A]
   val invariantAnimalList: InvariantList[Animal] = new InvariantList[Animal]
 
-  //COVARIANCE
+  //COVARIANCE atMax
   class CovariantList[+A]
-  val animal: Animal = new Cat
-  val animalList: CovariantList[Animal] = new CovariantList[Cat]
+  val animalList: CovariantList[Dog] = new CovariantList[Puppy]
 
-  //CONTRAVARIANCE
-  class Trainer[-A]
-  val trainer: Trainer[Cat] = new Trainer[Animal]
+  //CONTRAVARIANCE atLeast
+  class Trainer[-A <: Animal ]
+  val trainer: Trainer[Dog] = new Trainer[Animal]
 
   // bounded types
   class Cage[A <: Animal](animal: A)
   val cage = new Cage(new Dog)
 
+  // function currying
+  def add(x:Int,y:Int) :Int = x+y
+
+  def add2(a:Int)(b:Int) =a+b
+
+  val x: Int => (Int => Int) = a => add2(a)
+
+  val y: (Int => Int, Int) => Int = (partiala,b) => partiala(b)
 }
