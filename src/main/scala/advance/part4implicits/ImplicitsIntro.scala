@@ -28,4 +28,16 @@ object ImplicitsIntro extends App {
   increment(2)
   // NOT default args
 
+  /***
+   * Understanding of scala implicit conversion to Unit:
+https://scala-lang.org/files/archive/spec/2.13/spec.pdf
+Section 6.26.1 Value Conversions
+page number: 83
+Value Discarding:
+If e has some value type and the expected type is Unit, e is converted to the expected type by embedding it in the
+term { e ; () }.
+   */
+  def someFunction(a:Unit) :String = "Do Nothing"
+  someFunction(100)
+
 }
