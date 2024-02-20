@@ -32,10 +32,13 @@ object Variance extends App {
 
   // function currying
   def add(x:Int,y:Int) :Int = x+y
+  def another_add(a:Int)(b:Int) =a+b
 
-  def add2(a:Int)(b:Int) =a+b
+  def plusOne(x:Int):Int = another_add(1)(x)
 
-  val x: Int => (Int => Int) = a => add2(a)
+  println(plusOne(10))
 
-  val y: (Int => Int, Int) => Int = (partiala,b) => partiala(b)
+//  val x: Int => (Int => Int) = a => add2(a)
+//
+//  val y: (Int => Int, Int) => Int = (partiala,b) => partiala(b)
 }
