@@ -5,28 +5,23 @@ package advance.part4implicits
   */
 object ImplicitsIntro extends App {
 
-  val pair = "Danveer" -> "555"
-  val intPair = 1 -> 2
+  val StringPair:Map[Int, String] = Map(10 -> "555")
+  val intPair:Map[Int, Int] = Map(1 -> 2)
+  val merged :Map[Int, Any] = intPair ++ StringPair
+  println(merged.mkString)
 
   case class Person(name: String) {
-    def greet = s"Hi, my name is $name!"
+    def greet():String = s"Hi, my name is $name!"
   }
 
   implicit def fromStringToPerson(str: String): Person = Person(str)
 
   println("Peter".greet) // println(fromStringToPerson("Peter").greet)
 
-//  class A {
-//    def greet: Int = 2
-//  }
-//  implicit def fromStringToA(str: String): A = new A
-
-  // implicit parameters
-  def increment(x: Int)(implicit amount: Int) = x + amount
+  def increment(x: Int)(implicit amount: Int):Int = x + amount
   implicit val defaultAmount = 10
 
-  increment(2)
-  // NOT default args
+  println(increment(2))
 
   /***
    * Understanding of scala implicit conversion to Unit:
@@ -38,6 +33,6 @@ If e has some value type and the expected type is Unit, e is converted to the ex
 term { e ; () }.
    */
   def someFunction(a:Unit) :String = "Do Nothing"
-  someFunction(100)
+  someFunction("str")
 
 }
