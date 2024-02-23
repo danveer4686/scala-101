@@ -15,7 +15,7 @@ object UserDb {
     new Service {
       override def insert(user: User): Task[Unit] = Task {
         // can replace this with an actual DB SQL string
-        println(s"insert into public.user values ('${user.name}')")
+        println(s"insert into public.user values ('${user.name}', '${user.email}')")
       }
     }
   }
