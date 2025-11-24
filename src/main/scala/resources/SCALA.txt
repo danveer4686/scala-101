@@ -18,14 +18,33 @@ getStatusLazy(System.nanoTime)
 
 Access modifiers: private, protected, default public
 
-Object: Singleton (no static keyword in scala)
-override
-overload
-prevent inheritance using final and sealed
+| Modifier           | Access Allowed                       |
+| ------------------ | ------------------------------------ |
+| `public` (default) | Anywhere                             |
+| `private`          | Same class/object                    |
+| `private[this]`    | Same instance only                   |
+| `protected`        | Same class + subclasses              |
+| `private[x]`       | Within package, class, or object `x` |
+| `protected[x]`     | Same + subclasses within `x`         |
 
+----------------------------------------------------------------------
+Object: Singleton (no static keyword in scala)
+If a class and object share the same name and same file,
+the object is called a companion object.
+----------------------------------------------------------------------
+override: override is used when a subclass redefines a method or value from a parent class/trait.
+overload: Method overloading means multiple methods with the same name, but different parameters (type or count).
+----------------------------------------------------------------------
+prevent inheritance using final and sealed
+final → No inheritance at all
+sealed → Inheritance allowed only within the same file
+sealed helps with safe pattern matching (Option is a sealed class having None and Some only 2 subclasses)
+final is used for strict encapsulation and security
+----------------------------------------------------------------------
 field vs parameter
 case class MyClass1 (name:String, val id: Int)
-here name is parameter but id is field (getter setter method are already created for us)
+here name is parameter but id is field had it not been a case class, name would not be having getter method built in.
+Since it is case class (getter setter method are already created for us for both name and id)
 
 ############### Tarits vs Abstract classes ###############
 
@@ -33,19 +52,25 @@ Similarities:
 both can have implimented/abstract members
 
 Differences:
-1. multiple tarits can be inherited by same class while only one abstract class is allowed
-2. traits can not have parameters while abstract classes can have
+1. multiple traits can be inherited by same class while only one abstract class is allowed
+2. traits can not have parameters while abstract classes can have (deciding factor)
 3. Usage/purpose: Abstract class is "type of thing", Trait is "behaviour of thing"
+one subclass can be of one type (abstract class) but can do many things (traits)
+| Feature                              | Trait                       | Abstract Class         |
+| ------------------------------------ | --------------------------- | ---------------------- |
+| Can have abstract + concrete members | ✔                           | ✔                      |
+| Multiple inheritance                 | ✔ (multiple traits)         | ❌ (only one)           |
+| Constructor parameters               | ❌ Not allowed               | ✔ Allowed              |
+| Purpose                              | Behavior / capability       | Type / category        |
+| JVM mapping                          | Interface + default methods | Class                  |
+| Instantiation                        | Cannot be instantiated      | Cannot be instantiated |
 
 ############### scala types ###############
 
 scala.Any  <-  (a,b)
-
-a: scala.AnyRef (java.lang.Object) example: all user defined classes, String, List, Set...	<- scala.Null
-b: scala.AnyVal Int, Unit, Boolean, Float
-
+a: scala.AnyRef (java.lang.Object) example: all user defined classes, String, List, Set, Array, Options...	<- scala.Null
+b: scala.AnyVal Int, Unit, Boolean, Float, Double, Short, Char, Byte
 (a,b) <- scala.Nothing
-
 
 ############### Generics ###############
 
