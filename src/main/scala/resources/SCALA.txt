@@ -81,18 +81,19 @@ class Cat extends Animal
 polymorphism
 val pet: Animal = new Cat
 
-covarient type
+Invarient type (No Sign)
+class MyPets[A]
+val a:MyPets[Animal] = new MyPets[Animal]
+val a:MyPets[Animal] = new MyPets[Dog] // ❌ ERROR (invariant)
+
+Covarient type
 class MyPets[+A]
 val a:MyPets[Animal] = new MyPets[Dog]
 
-without covarient type
-class MyPets[A]
-val a:MyPets[Animal] = new MyPets[Animal]
-
-invarient type
+Contravarient type
 class MyPets[-A]
 val a:MyPets[Dog] = new MyPets[Animal]
-
+val a:MyPets[Animal] = new MyPets[Dog] // ❌ ERROR (not allowed)
 
 ############### Functional Programming ###############
 
