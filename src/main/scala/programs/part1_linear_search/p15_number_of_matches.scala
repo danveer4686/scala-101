@@ -1,5 +1,5 @@
 package programs.part1_linear_search
-
+// https://leetcode.com/problems/count-of-matches-in-tournament/description/
 object p15_number_of_matches {
 
   def numberOfMatches(n: Int): Int = {
