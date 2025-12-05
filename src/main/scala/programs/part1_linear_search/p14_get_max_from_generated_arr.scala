@@ -1,7 +1,7 @@
 package programs.part1_linear_search
 
 object p14_get_max_from_generated_arr extends App {
-
+//    https://leetcode.com/problems/get-maximum-in-generated-array/description/
   def getMaximumGenerated(n: Int): Int = {
     if (n==0 || n==1) return n
     val arr:Array[Int] = new Array(n+1)
