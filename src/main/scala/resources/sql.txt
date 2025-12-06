@@ -119,7 +119,7 @@ join cte as second on cte.uid=second.uid and cte.dt!=second.dt and cte.pid=secon
 
 ===============================================================
 ===============================================================
---RUNNING SALES
+--RUNNING TOTAL
 WITH sales_data AS (
     SELECT 2024 AS year, 1 AS month, 1200 AS sales
     UNION ALL SELECT 2024, 2, 1500
@@ -129,6 +129,10 @@ WITH sales_data AS (
     UNION ALL SELECT 2025, 3, 1250
 )
 SELECT year, month , sales, sum(sales) over (partition by year order by month) as runningsales
+FROM sales_data;
+
+--RUNNING TOTAL FOR LAST 2 MONTHS
+SELECT year, month , sales, sum(sales) over (partition by year order by month ROWS BETWEEN 1 preceding and current row) as runningsales
 FROM sales_data;
 
 ===============================================================
