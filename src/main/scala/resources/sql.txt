@@ -119,7 +119,7 @@ join cte as second on cte.uid=second.uid and cte.dt!=second.dt and cte.pid=secon
 
 ===============================================================
 ===============================================================
---RUNNING TOTAL
+
 WITH sales_data AS (
     SELECT 2024 AS year, 1 AS month, 1200 AS sales
     UNION ALL SELECT 2024, 2, 1500
@@ -128,16 +128,75 @@ WITH sales_data AS (
     UNION ALL SELECT 2025, 2, 1400
     UNION ALL SELECT 2025, 3, 1250
 )
+
+--RUNNING TOTAL FOR EVERY YEAR
 SELECT year, month , sales, sum(sales) over (partition by year order by month) as runningsales
 FROM sales_data;
 
---RUNNING TOTAL FOR LAST 2 MONTHS
-SELECT year, month , sales, sum(sales) over (partition by year order by month ROWS BETWEEN 1 preceding and current row) as runningsales
+--RUNNING TOTAL FOR LAST 2 QTRs IN A YEAR
+SELECT year, qtr , sales, sum(sales) over (partition by year order by qtr ROWS BETWEEN 1 preceding and current row) as runningsales
 FROM sales_data;
 
+--PIVOTING (GET NEW COLUMNS FOR SALES AS Q1, Q2, Q3, Q4)
+SELECT year, SUM( CASE WHEN QTR=1 THEN sales ELSE 0 END) AS Q1
+, SUM( CASE WHEN QTR=2 THEN sales ELSE 0 END) AS Q2
+, SUM( CASE WHEN QTR=3 THEN sales ELSE 0 END) AS Q3
+, SUM( CASE WHEN QTR=4 THEN sales ELSE 0 END) AS Q4
+FROM sales_data GROUP BY 1;
+
 ===============================================================
 ===============================================================
 
+WITH user_segment AS ( SELECT * FROM ( VALUES
+            ('u1',  's1'),
+            ('u2',  's1'),
+            ('u3',  's1'),
+            ('u4',  's2'),
+            ('u5',  's2'),
+            ('u6',  's3'),
+            ('u7',  's3'),
+            ('u8',  's3'),
+            ('u9',  's3'),
+            ('u10', 's3')    ) AS t(user_id, segment) )
+, bookings AS (SELECT * FROM ( VALUES
+           ('b1',  '2022-03-23', 'u1', 'Flight'),
+            ('b2',  '2022-03-27', 'u2', 'Flight'),
+            ('b3',  '2022-03-28', 'u1', 'Hotel'),
+            ('b4',  '2022-03-31', 'u4', 'Flight'),
+            ('b5',  '2022-04-02', 'u1', 'Hotel'),
+            ('b6',  '2022-04-02', 'u2', 'Flight'),
+            ('b7',  '2022-04-06', 'u5', 'Flight'),
+            ('b8',  '2022-04-06', 'u6', 'Hotel'),
+            ('b9',  '2022-04-06', 'u2', 'Flight'),
+            ('b10', '2022-04-10', 'u1', 'Flight'),
+            ('b11', '2022-04-12', 'u4', 'Flight'),
+            ('b12', '2022-04-16', 'u1', 'Flight'),
+            ('b13', '2022-04-19', 'u2', 'Flight'),
+            ('b14', '2022-04-20', 'u5', 'Hotel'),
+            ('b15', '2022-04-22', 'u6', 'Flight'),
+            ('b16', '2022-04-26', 'u4', 'Hotel'),
+            ('b17', '2022-04-28', 'u2', 'Hotel'),
+            ('b18', '2022-04-30', 'u1', 'Hotel'),
+            ('b19', '2022-05-04', 'u4', 'Hotel'),
+            ('b20', '2022-05-06', 'u1', 'Flight') ) AS t(booking_id, booking_date, user_id, booking_type) )
+
+-- Find user who made the first booking in the segment and total number of booking he made.
+select * from (
+select distinct segment , booking_id,bookings.user_id, 
+dense_rank() over (partition by segment order by booking_date) date_rnk,
+count(booking_id) over (partition by segment, bookings.user_id) num_of_bookings 
+from user_segment 
+join bookings on user_segment.user_id=bookings.user_id
+order by segment, date_rnk) a where date_rnk=1
+
+-- total hotelbooking and flightbooking for everysegment
+select segment, sum( case when booking_type='Flight' then 1 else 0 end) flightcount
+,sum( case when booking_type='Hotel' then 1 else 0 end) hotelcount
+from user_segment 
+left join bookings on user_segment.user_id=bookings.user_id
+group by 1
+===============================================================
+===============================================================
 
 Q: 32 organisation hierarchy 
 
