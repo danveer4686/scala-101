@@ -1,0 +1,272 @@
+===============================================================
+===============================================================
+
+WITH emp AS (
+SELECT 1 AS id, 'n1' AS name, 'd1' as dept, 20000 AS salary
+UNION ALL
+SELECT 1 , 'n1' , 'd1' , 20000
+UNION ALL
+SELECT 1 , 'n1' , 'd1' , 20000
+UNION ALL
+SELECT 2 , 'n2' , 'd1' , 30000 
+UNION ALL
+SELECT 3 , 'n3' , 'd1' , 40000
+UNION ALL
+SELECT 4 , 'n4' , 'd2' , 40000
+UNION ALL
+SELECT 5 , 'n5' , 'd2' , 50000
+)
+
+===============================================================
+
+1. Second/Third Highest Salary
+SELECT salary FROM ( SELECT *, DENSE_RANK() OVER (ORDER BY salary DESC) AS rnk FROM emp )  WHERE rnk=2;
+SELECT salary FROM ( SELECT *, DENSE_RANK() OVER (ORDER BY salary DESC) AS rnk FROM emp )  WHERE rnk=3;
+
+===============================================================
+
+2. Second Highest Salary in each dept
+SELECT dept, salary FROM ( SELECT *, DENSE_RANK() OVER (PARTITION BY dept ORDER BY salary DESC) AS rnk FROM emp )  WHERE rnk=2;
+
+--NOTE: dense_rank instead of rank || no ranks will be skipped even if multiple emp have same salary
+
+===============================================================
+
+2. Display Dept, emp name having max salary (optimised without join/window function)
+SELECT dept, LTRIM(MAX(concat(salary,name)),CAST(MAX(salary) AS STRING)) AS name, MAX(salary) AS max_sal  FROM emp GROUP BY dept;
+
+===============================================================
+===============================================================
+
+3. Display duplicate rows
+SELECT id, name, dept, salary FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY id ) AS rn FROM emp ) WHERE rn!=1 ;
+
+===============================================================
+
+4. Remove duplicate rows
+CREATE OR REPLACE TABLE emp AS
+SELECT id, name, dept, salary FROM ( SELECT *, ROW_NUMBER() OVER (PARTITION BY id ) AS rn FROM emp ) WHERE rn=1 ;
+
+===============================================================
+
+5. Display duplicate record with duplicate count
+SELECT DISTINCT id,name,dept,salary,cnt FROM (SELECT *, count(id) OVER (PARTITION BY id ) AS cnt FROM emp) WHERE cnt>1 ;
+
+===============================================================
+
+6. Display id and duplicate count (use group by)
+SELECT  id, count(id) as cnt FROM emp GROUP BY id HAVING  cnt >1 ;
+
+===============================================================
+===============================================================
+ 
+7. Find emp records where emp is not assigned to the department
+SELECT * FROM emp WHERE dept NOT IN (SELECT id FROM department);
+
+===============================================================
+
+8. Create a table with the same structure as the emp table without data
+CREATE TABLE emp1 AS SELECT * FROM emp WHERE 1=2;
+
+===============================================================
+
+9. Create a table with the same structure with data from the emp table
+CREATE TABLE emp1 AS SELECT * FROM emp;
+
+===============================================================
+
+10. Fetch only common records between 2 tables
+SELECT * FROM emp
+INTERSECT
+SELECT * FROM emp1;
+
+===============================================================
+
+11. Display emp names with thier manager names
+SELECT DISTINCT e.name , m.name FROM emp e INNER JOIN emp m ON e.mid=m.id;
+
+===============================================================
+===============================================================
+
+
+Q: 32 organisation hierarchy 
+
+emp_id         reports_to        emp_name
+------         ------       --------------
+1              null         Sumanta
+2              1            Arpita
+3              null         Pradip
+4              1            Sujon
+5              2            Arpan
+6              5            Jayanti
+
+expected result
+emp_id         hierarchy_level         emp_name
+------         ---------------        ----------
+2                    1                  Arpita
+4                    1                  Sujon
+5                    2                  Arpan
+6                    3                 Jayanti
+
+with  CTE as 
+        ( select  emp_id, reports_to , emp_name , 1 as level from  Emp
+        where   emp_name = 'Sumanta'
+        union all
+        select  child.emp_id, child.reports_to , child.emp_name , level + 1 from    Emp child
+        join    CTE parent
+        on      child.reports_to = parent.emp_id )
+select  *
+from    CTE
+
+===============================================================
+===============================================================
+
+--WORLD CUP POINT TABLE
+
+with matches as (
+select 'India' as team_1, 'SL' as team_2, 'India' as winner union all
+select 'SL' as team_1, 'Aus' as team_2, 'Aus' as winner union all
+select 'SA' as team_1, 'Eng' as team_2, 'Eng' as winner union all
+select 'Eng' as team_1, 'NZ' as team_2, 'NZ' as winner union all
+select 'Aus' as team_1, 'India' as team_2, 'India' as winner
+),
+
+total_matches as (
+select t, count(t) as total_match from (
+select team_1 as t from  matches group by 1
+union all
+select team_2 as t from  matches group by 1) 
+group by 1)
+
+select a.t, a.total_match, 
+count(m.winner) as wins, 
+a.total_match-count(m.winner) as loss 
+from  total_matches a
+left join matches m on m.winner = a.t
+group by 1,2;
+
+=======================================
+=======================================
+
+--FUTURE SUNDAYS
+
+with cte_future_sundays_dates as (
+SELECT date, EXTRACT(dayofweek FROM date) AS week_day
+FROM UNNEST(GENERATE_DATE_ARRAY('2022-03-01', '2022-06-01')) AS date
+where EXTRACT(dayofweek FROM date) = 1
+ORDER BY date
+)
+SELECT date, week_day, ROW_NUMBER() over ( order by date asc ) from cte_future_sundays_dates
+
+=======================================
+=======================================
+
+--RUNNING TOTAL 
+
+WITH Farm AS
+ (SELECT 'cat' as animal, 3 as population, 'mammal' as category
+  UNION ALL SELECT 'duck', 3, 'bird'
+  UNION ALL SELECT 'dog', 2, 'mammal'
+  UNION ALL SELECT 'goose', 5, 'bird'
+  UNION ALL SELECT 'ox', 2, 'mammal'
+  UNION ALL SELECT 'goat', 4, 'mammal')
+SELECT animal, category,population, 
+sum(population ) over (partition by category order by population desc rows between UNBOUNDED PRECEDING AND CURRENT ROW ) as runnin_total 
+FROM Farm;
+
+=======================================
+=======================================
+
+--PEOPLE WHOSE FRIENDS' TOTAL MARKS CROSS 100
+WITH person AS
+ (
+  SELECT 1 as pid, 'name1' as name, 88 as score
+  UNION ALL SELECT 2, 'name2', 11
+  UNION ALL SELECT 3, 'name3', 27
+  UNION ALL SELECT 4, 'name4', 45
+  UNION ALL SELECT 5, 'name5', 63
+  ),
+  friend as (
+  SELECT 1 as pid, 2 as fid
+  UNION ALL SELECT 1,3
+  UNION ALL SELECT 2,1
+  UNION ALL SELECT 2,3
+  UNION ALL SELECT 3,5
+  UNION ALL SELECT 4,2
+  UNION ALL SELECT 4,3
+  UNION ALL SELECT 4,5
+  )
+ , p_whose_f_total_is_over_100 as(
+SELECT f.pid, sum(p.score) as f_score, 
+FROM person p
+join friend f on p.pid = f.fid
+group by f.pid
+having f_score >100
+order by f.pid)
+
+SELECT r.pid, p.name, p.score FROM p_whose_f_total_is_over_100 r
+JOIN person p on r.pid=p.pid;
+
+=======================================
+=======================================
+
+--date wise aggregate state
+with tasks as (
+  SELECT date '2019-01-01' as date_value, 'success' as state
+union all SELECT date '2019-01-02', 'success'
+union all SELECT date '2019-01-03', 'success'
+union all SELECT date '2019-01-04', 'fail'
+union all SELECT date '2019-01-05', 'fail'
+union all SELECT date '2019-01-06', 'success'
+  ), 
+task_with_date_group as (
+select date_value , state, date_add(date_value, interval -rn day) as date_group 
+from (select date_value , state, row_number() over (partition by state ) as rn from tasks order by date_value) 
+)
+
+SELECT min(date_value ) sd, max(date_value) ed, state FROM task_with_date_group
+GROUP BY state, date_group
+ORDER BY sd;
+
+=======================================
+=======================================
+
+
+
+12. Write sql query for the below scenario
+I/p:ORACLE
+
+O/p:
+O
+R
+A
+C
+L
+E
+i.e, splitting into multiple columns a string using sql.
+
+Answer:Select Substr(‘ORACLE’,Level,1) From Dual
+Connect By Level<= Length(‘ORACLE’);
+
+27.How to display 1 to 100 Numbers with query?
+Answer:Select level from dual connect by level <=100;
+
+26.How to display following using query?
+
+*
+
+**
+
+***
+
+Answer:SELECT lpad (‘*’, ROWNUM,’*’) FROM dual WHERE ROWNUM <4;
+
+select empid, sum(decode(empid,1,salary)) sal1,sum(decode(empid,2,salary)) sal2,sum(decode(empid,3,salary)) sal3,
+sum(decode(empid,4,salary)) sal4 
+from emp group by empid order by 1
+
+Q: Oracle SQL last n records
+
+SELECT *  FROM ( SELECT message, mes_date, mes_time, ROW_NUMBER() OVER (ORDER BY TO_DATE(TO_CHAR(mes_date, 'YYYY-MM-DD') || mes_time, 'YYYY-MM-DD HH24:MI') DESC) rank FROM messages  )  WHERE rank <= n ORDER  BY rank
+=======================================
+=======================================
