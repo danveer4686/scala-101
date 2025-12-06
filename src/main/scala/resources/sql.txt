@@ -119,6 +119,20 @@ join cte as second on cte.uid=second.uid and cte.dt!=second.dt and cte.pid=secon
 
 ===============================================================
 ===============================================================
+--RUNNING SALES
+WITH sales_data AS (
+    SELECT 2024 AS year, 1 AS month, 1200 AS sales
+    UNION ALL SELECT 2024, 2, 1500
+    UNION ALL SELECT 2024, 3, 1100
+    UNION ALL SELECT 2025, 1, 1300
+    UNION ALL SELECT 2025, 2, 1400
+    UNION ALL SELECT 2025, 3, 1250
+)
+SELECT year, month , sales, sum(sales) over (partition by year order by month) as runningsales
+FROM sales_data;
+
+===============================================================
+===============================================================
 
 
 Q: 32 organisation hierarchy 
