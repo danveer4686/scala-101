@@ -379,3 +379,12 @@ Q: Oracle SQL last n records
 SELECT *  FROM ( SELECT message, mes_date, mes_time, ROW_NUMBER() OVER (ORDER BY TO_DATE(TO_CHAR(mes_date, 'YYYY-MM-DD') || mes_time, 'YYYY-MM-DD HH24:MI') DESC) rank FROM messages  )  WHERE rank <= n ORDER  BY rank
 =======================================
 =======================================
+
+Blinkit/Zomato question related to customer orders in first 3 consecutive months
+https://www.youtube.com/watch?v=yaax-oLOGCE
+Paypal question related to cibil score
+https://www.youtube.com/watch?v=UrIrBraLvZU
+
+
+
+
